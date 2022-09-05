@@ -75,7 +75,7 @@ public class imagescontroller {
             headers.setContentLength(image.length);
             return new HttpEntity<>(image,headers);
         } catch (Exception e) {
-            System.out.println("hol");
+            e.printStackTrace();
             return  new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 

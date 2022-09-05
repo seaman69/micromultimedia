@@ -57,6 +57,25 @@ public class imagescontroller {
         }
 
     }
+    @GetMapping("/getvideo")
+    public HttpEntity<?> getvideo(@RequestParam("path")String path) {
+        //System.out.println(path);
+        String home=System.getProperty("user.home");
+        File file = new File(home+"/videos/"+path);
+        System.out.println(home+"/videos/"+path);
+
+        try {
+            byte[] image = Files.readAllBytes(file.toPath());
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+            headers.setContentLength(image.length);
+            //System.out.println("holie");
+            return new HttpEntity<>(image, headers);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return new HttpEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
     @GetMapping("/getimage")
     //@PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
 
@@ -80,4 +99,5 @@ public class imagescontroller {
         }
 
     }
+
 }

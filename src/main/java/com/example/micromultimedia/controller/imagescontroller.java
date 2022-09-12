@@ -21,7 +21,7 @@ public class imagescontroller {
     @ResponseBody
     public ResponseEntity<Resource> download(@RequestParam("path")String path) {
 
-        File file= new File(System.getProperty("user.home")+"/ObjetosVirtuales/"+path);
+        File file= new File(System.getProperty("user.home")+"/ObjetosVirtuales"+path);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
 

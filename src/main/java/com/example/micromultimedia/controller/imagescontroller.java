@@ -17,14 +17,11 @@ import java.util.zip.ZipOutputStream;
 @RestController
 @RequestMapping("/api/images")
 public class imagescontroller {
-    @GetMapping("/getimageszip")
+    @GetMapping("/getextrapdf")
     @ResponseBody
     public ResponseEntity<Resource> download(@RequestParam("path")String path) {
-        System.out.println("inicio_compresion");
 
-        System.out.println("fin_compresion");
-        System.out.println(System.getProperty("user.home")+"/ObjetosVirtuales"+path);
-        File file= new File(System.getProperty("user.home")+"/ObjetosVirtuales"+path+"framesimages.zip");
+        File file= new File(System.getProperty("user.home")+"/ObjetosVirtuales/"+path);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
 
@@ -38,25 +35,7 @@ public class imagescontroller {
         return new ResponseEntity<>(resource, headers, HttpStatus.OK);
     }
 
-    public void pack(String sourceDirPath, String zipFilePath) throws IOException {
-        Path p = Files.createFile(Paths.get(zipFilePath));
-        try (ZipOutputStream zs = new ZipOutputStream(Files.newOutputStream(p))) {
-            Path pp = Paths.get(sourceDirPath);
-            Files.walk(pp)
-                    .filter(path -> !Files.isDirectory(path))
-                    .forEach(path -> {
-                        ZipEntry zipEntry = new ZipEntry(pp.relativize(path).toString());
-                        try {
-                            zs.putNextEntry(zipEntry);
-                            Files.copy(path, zs);
-                            zs.closeEntry();
-                        } catch (IOException e) {
-                            System.err.println(e);
-                        }
-                    });
-        }
 
-    }
     @GetMapping("/getvideo")
     public HttpEntity<?> getvideo(@RequestParam("path")String path) {
         //System.out.println(path);

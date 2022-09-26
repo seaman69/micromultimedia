@@ -21,10 +21,20 @@ public class imagescontroller {
     @ResponseBody
     public ResponseEntity<Resource> download(@RequestParam("path")String path) {
 
+        return getResourceResponseEntity(path);
+    }
+
+    @GetMapping("/getresource")
+    @ResponseBody
+    public ResponseEntity<Resource> getrecurso(@RequestParam("path")String path){
+        return getResourceResponseEntity(path);
+    }
+
+    private ResponseEntity<Resource> getResourceResponseEntity(@RequestParam("path") String path) {
         File file= new File(System.getProperty("user.home")+"/ObjetosVirtuales"+path);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
-
+        headers.set(HttpHeaders.CONTENT_DISPOSITION,"attachment; filename="+ file.getName());
         InputStreamResource resource = null;
         try {
             resource = new InputStreamResource(new FileInputStream(file));
@@ -34,8 +44,15 @@ public class imagescontroller {
 
         return new ResponseEntity<>(resource, headers, HttpStatus.OK);
     }
+    @GetMapping("/Download")
+    @ResponseBody
+    public ResponseEntity<Resource> getFile(@RequestParam String path) throws FileNotFoundException {
+        File file1= new File(System.getProperty("user.home")+"/ObjetosVirtuales"+path);
+        Resource file = new InputStreamResource(new FileInputStream(file1));
+        return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION,
+                "attachment;filename=\"" + file.getFilename() + "\"").body(file);
 
-
+    }
     @GetMapping("/getvideo")
     public HttpEntity<?> getvideo(@RequestParam("path")String path) {
         //System.out.println(path);

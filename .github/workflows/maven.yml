@@ -28,7 +28,7 @@ jobs:
       uses: mr-smithers-excellent/docker-build-push@v5
       with:
         image: seaman69/3dspace
-        tags: multimediav3
+        tags: multimediav4
         registry: docker.io
         username: ${{secrets.DOCKER_MAIL}}
         password: ${{ secrets.DOCKER_PASSWD }}

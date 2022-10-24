@@ -27,7 +27,7 @@ jobs:
     - name: Push dockerhub
       uses: mr-smithers-excellent/docker-build-push@v5
       with:
-        image: seaman69/3dspace
+        image: 3dspace/micros
         tags: multimediav5
         registry: docker.io
         username: ${{secrets.DOCKER_MAIL}}

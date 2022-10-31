@@ -1,5 +1,7 @@
 package com.example.micromultimedia.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.*;
@@ -17,6 +19,7 @@ import java.util.zip.ZipOutputStream;
 @RestController
 @RequestMapping("/api/images")
 public class imagescontroller {
+    private static final Logger LOGGER = LoggerFactory.getLogger(imagescontroller.class);
     @GetMapping("/getextrapdf")
     @ResponseBody
     public ResponseEntity<Resource> download(@RequestParam("path")String path) {
@@ -40,6 +43,7 @@ public class imagescontroller {
         try {
             resource = new InputStreamResource(new FileInputStream(file));
         } catch (FileNotFoundException e) {
+            LOGGER.error("ARCHIVO NO ENCONTRADO+"+file.toPath());
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 

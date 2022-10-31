@@ -47,9 +47,9 @@ public class imagescontroller {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
-        return new ResponseEntity<>(resource, headers, HttpStatus.OK);
+        return  ResponseEntity.ok().headers(headers).contentLength(file.length()).contentType(MediaType.parseMediaType("application/pdf")).body(resource);
     }
-    @GetMapping("/viewresource")
+    @GetMapping("/viewresource/pdf")
     @ResponseBody
     public ResponseEntity<Resource> getrecurso2(@RequestParam("path")String path){
         return getResourceResponseEntity(path,"inline");

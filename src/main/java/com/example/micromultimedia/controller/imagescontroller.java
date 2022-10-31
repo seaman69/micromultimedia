@@ -21,28 +21,34 @@ public class imagescontroller {
     @ResponseBody
     public ResponseEntity<Resource> download(@RequestParam("path")String path) {
 
-        return getResourceResponseEntity(path);
+        return getResourceResponseEntity(path,"attachment");
     }
 
     @GetMapping("/getresource")
     @ResponseBody
     public ResponseEntity<Resource> getrecurso(@RequestParam("path")String path){
-        return getResourceResponseEntity(path);
+        return getResourceResponseEntity(path,"attachment");
     }
 
-    private ResponseEntity<Resource> getResourceResponseEntity(@RequestParam("path") String path) {
+
+    private ResponseEntity<Resource> getResourceResponseEntity(String path,String tipo) {
         File file= new File(System.getProperty("user.home")+"/ObjetosVirtuales"+path);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
-        headers.set(HttpHeaders.CONTENT_DISPOSITION,"attachment; filename="+ file.getName());
+        headers.set(HttpHeaders.CONTENT_DISPOSITION,tipo+"; filename="+ file.getName());
         InputStreamResource resource = null;
         try {
             resource = new InputStreamResource(new FileInputStream(file));
         } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
         return new ResponseEntity<>(resource, headers, HttpStatus.OK);
+    }
+    @GetMapping("/viewresource")
+    @ResponseBody
+    public ResponseEntity<Resource> getrecurso2(@RequestParam("path")String path){
+        return getResourceResponseEntity(path,"inline");
     }
     @GetMapping("/Download")
     @ResponseBody

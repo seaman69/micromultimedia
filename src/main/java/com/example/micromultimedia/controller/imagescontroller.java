@@ -24,20 +24,25 @@ public class imagescontroller {
     @ResponseBody
     public ResponseEntity<Resource> download(@RequestParam("path")String path) {
 
-        return getResourceResponseEntity(path,"attachment");
+        return getResourceResponseEntity(path,"attachment","otro");
     }
 
     @GetMapping("/getresource")
     @ResponseBody
     public ResponseEntity<Resource> getrecurso(@RequestParam("path")String path){
-        return getResourceResponseEntity(path,"attachment");
+        return getResourceResponseEntity(path,"attachment","otro");
     }
 
 
-    private ResponseEntity<Resource> getResourceResponseEntity(String path,String tipo) {
+    private ResponseEntity<Resource> getResourceResponseEntity(String path,String tipo,String contenido) {
         File file= new File(System.getProperty("user.home")+"/ObjetosVirtuales"+path);
         HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+        if(contenido.equals("pdf")){
+            headers.setContentType(MediaType.APPLICATION_PDF);
+        }else{
+            headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+        }
+
         headers.set(HttpHeaders.CONTENT_DISPOSITION,tipo+"; filename="+ file.getName());
         InputStreamResource resource = null;
         try {
@@ -52,7 +57,7 @@ public class imagescontroller {
     @GetMapping("/viewresource/pdf")
     @ResponseBody
     public ResponseEntity<Resource> getrecurso2(@RequestParam("path")String path){
-        return getResourceResponseEntity(path,"inline");
+        return getResourceResponseEntity(path,"inline","pdf");
     }
     @GetMapping("/Download")
     @ResponseBody
